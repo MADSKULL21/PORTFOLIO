@@ -1,0 +1,68 @@
+/* Minimal base styles for the portfolio. Tailwind CDN provides most utilities.
+   This file contains small tweaks and fallbacks used by the app. */
+
+/* Smooth fonts and better text rendering */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+/* Make images behave consistently */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Provide a simple container fallback if Tailwind's container isn't present */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 1200px;
+}
+
+/* Dark diagonal pattern overlay for hero section */
+.dark-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(10, 10, 10, 0.1) 10px,
+    rgba(10, 10, 10, 0.1) 20px
+  );
+}
+
+/* Hero background image */
+.hero-bg {
+  background-image: url('/images/background_image.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Portfolio background with image and overlay */
+.portfolio-bg {
+  background-image: url('/images/background_image.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Overlay for portfolio sections */
+.portfolio-overlay {
+  background-color: rgba(10, 10, 10, 0.85);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -26,7 +26,7 @@ const Achievements: React.FC = () => {
             </div>
           </div>
           <div className="order-1 lg:order-2">
-            <img src="/images/key achievements.png" alt="Achievements Graphic" className="rounded-lg shadow-xl w-full h-auto object-cover"/>
+            <img src="/images/key-achievements.png" alt="Achievements Graphic" className="rounded-lg shadow-xl w-full h-auto object-cover"/>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ const About: React.FC = () => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <img src="/images/about me.png" alt="Shaunak Lad" className="rounded-lg shadow-2xl w-full h-auto object-cover" />
+            <img src="/images/about-me.png" alt="Shaunak Lad" className="rounded-lg shadow-2xl w-full h-auto object-cover" />
           </div>
         </div>
       </div>

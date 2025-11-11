@@ -7,16 +7,16 @@ const skillsData = [
     skills: ['Python', 'SQL', 'C++', 'C'],
   },
   {
-    title: 'AI/ML Frameworks',
-    skills: ['TensorFlow', 'PyTorch', 'Keras', 'Scikit-learn', 'LangChain'],
+    title: 'Frameworks & Tools',
+    skills: ['TensorFlow', 'PyTorch', 'Keras', 'Scikit-learn', 'LangChain', 'LangGraph', 'LangSmith', 'Whisper', 'Streamlit', 'OpenCV', 'Selenium', 'FastAPI', 'Hugging Face'],
   },
   {
-    title: 'Specialized Tools',
-    skills: ['LLMs', 'NLP', 'Streamlit', 'OpenCV', 'NLTK', 'SpaCy'],
+    title: 'Libraries',
+    skills: ['NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'TorchText', 'NLTK', 'SpaCy', 'Transformers'],
   },
   {
-    title: 'Data Processing',
-    skills: ['NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'TF-IDF'],
+    title: 'Technologies',
+    skills: ['LLMs', 'RAG', 'Prompt Engineering', 'Generative AI', 'NLP', 'CNN', 'LSTM', 'TF-IDF', 'Model Fine-Tuning', 'Transfer Learning', 'MLOps', 'Cloud Deployment (AWS/GCP)', 'CI/CD', 'Git'],
   },
 ];
 
@@ -42,7 +42,7 @@ const Skills: React.FC = () => {
     <section id="skills" className="py-20 md:py-32 bg-brand-dark">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-4xl font-bold mb-12">Technical Expertise</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {skillsData.map((category) => (
             <SkillCard key={category.title} title={category.title} skills={category.skills} />
           ))}

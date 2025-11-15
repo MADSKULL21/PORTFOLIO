@@ -10,16 +10,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: 'Customer Churn Prediction & Retention Strategy',
-    date: '11/2025',
-    description:
-      'Comprehensive data analytics project using SQL for database management, Python for ML-based churn prediction, and Power BI for interactive dashboards. Built predictive models and developed retention strategies with actionable insights.',
-    repo: 'https://github.com/MADSKULL21/Customer-Churn-Prediction-Retention-Strategy-Using-SQL-Power-BI-Machine-Learning',
-    image: 'https://opengraph.githubassets.com/1/MADSKULL21/Customer-Churn-Prediction-Retention-Strategy-Using-SQL-Power-BI-Machine-Learning',
-    tech: 'SQL, Python, Power BI, Machine Learning',
-    featured: true,
-  },
-  {
     title: 'ProPlay Assistant Chatbot',
     date: '09/2025',
     description:
@@ -28,6 +18,15 @@ export const projects: Project[] = [
     image: 'https://opengraph.githubassets.com/1/MADSKULL21/ProPlay-Assistant',
     tech: 'Python, Streamlit, Groq API, TensorFlow',
     featured: true,
+  },
+  {
+    title: 'Customer Churn Prediction & Retention Strategy',
+    date: '11/2025',
+    description:
+      'Comprehensive data analytics project using SQL for database management, Python for ML-based churn prediction, and Power BI for interactive dashboards. Built predictive models and developed retention strategies with actionable insights.',
+    repo: 'https://github.com/MADSKULL21/Customer-Churn-Prediction-Retention-Strategy-Using-SQL-Power-BI-Machine-Learning',
+    image: 'https://opengraph.githubassets.com/1/MADSKULL21/Customer-Churn-Prediction-Retention-Strategy-Using-SQL-Power-BI-Machine-Learning',
+    tech: 'SQL, Python, Power BI, Machine Learning',
   },
   {
     title: 'JARVIS AI Agent',

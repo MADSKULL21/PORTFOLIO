@@ -1,0 +1,37 @@
+next-env.d.ts
+  6347b6fc1cf3ba1a 1-6
+vercel.json
+  6347b6fc1cf3ba1a 3
+tsconfig.json
+  6347b6fc1cf3ba1a 4,6-8,10-11,13,15,18-24,30-41
+README.md
+  6347b6fc1cf3ba1a 1-45
+eslint.config.mjs
+  6347b6fc1cf3ba1a 1-12
+.gitignore
+  6347b6fc1cf3ba1a 13-15
+next.config.ts
+  6347b6fc1cf3ba1a 1-5
+package.json
+  6347b6fc1cf3ba1a 6-9,12,17-18,20-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "fe32fedd430ddbe5089e2fb57a851d72c6269a5a",
+  "prompts": {
+    "6347b6fc1cf3ba1a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019c6535-7a3e-7580-952c-accaa8c444df",
+        "model": "gpt-5.4"
+      },
+      "human_author": "shaunak lad",
+      "messages": [],
+      "total_additions": 899,
+      "total_deletions": 828,
+      "accepted_lines": 791,
+      "overriden_lines": 0
+    }
+  }
+}

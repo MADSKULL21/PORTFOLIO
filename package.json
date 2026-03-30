@@ -2,20 +2,23 @@
   "name": "shaunak-lad---ai/ml-engineer-portfolio",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "next": "16.1.6",
     "react-dom": "^19.2.0",
     "react": "^19.2.0"
   },
   "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "eslint": "^9.37.0",
+    "eslint-config-next": "16.1.6",
+    "typescript": "~5.8.2"
   }
 }

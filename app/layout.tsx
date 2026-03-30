@@ -2,6 +2,11 @@ import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, Space_Grotesk, Syne } from 'next/font/google';
 import './globals.css';
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.VERCEL_PROJECT_PRODUCTION_URL?.replace(/^/, 'https://') ??
+  'https://shaunaklad21.vercel.app';
+
 const bodyFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-body',
@@ -22,7 +27,7 @@ const monoFont = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://shaunak-lad.vercel.app'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Shaunak Lad | AI/ML Engineer Portfolio',
     template: '%s | Shaunak Lad',

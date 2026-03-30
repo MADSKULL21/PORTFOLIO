@@ -51,7 +51,6 @@ export default function Hero() {
               sizes="(max-width: 1280px) 44vw, 560px"
               className="ascii-image"
             />
-            <div className="ascii-overlay">AI/ML Engineer focused on practical outcomes</div>
           </div>
         </Reveal>
       </div>

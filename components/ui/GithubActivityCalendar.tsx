@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { cloneElement, useEffect, useMemo, useState } from 'react';
 import { ActivityCalendar } from 'react-activity-calendar';
 import type { ActivityDay } from '@/lib/github-activity';
 
@@ -8,11 +8,13 @@ type ThemeMode = 'dark' | 'light';
 
 type GithubActivityCalendarProps = {
   data: ActivityDay[];
+  year: number;
+  totalActivities: number;
 };
 
 const calendarTheme = {
-  dark: ['#16110b', '#3f2a0c', '#7f5412', '#be8521', '#ffd54f'],
-  light: ['#efe5d1', '#d9bb85', '#c58c34', '#a96617', '#7f4b0a'],
+  dark: ['#2a2a2a', '#4c4c4c', '#767676', '#a7a7a7', '#dfdfdf'],
+  light: ['#e7e0d4', '#cec5b6', '#aca191', '#847968', '#5d5344'],
 };
 
 const readTheme = (): ThemeMode => {
@@ -31,8 +33,14 @@ const formatTooltipDate = (date: string) =>
     timeZone: 'UTC',
   }).format(new Date(`${date}T00:00:00Z`));
 
-export default function GithubActivityCalendar({ data }: GithubActivityCalendarProps) {
+const describeActivity = (activity: ActivityDay) =>
+  `${activity.count} contribution${activity.count === 1 ? '' : 's'} on ${formatTooltipDate(activity.date)}`;
+
+const legendLevels = [0, 1, 2, 3, 4];
+
+export default function GithubActivityCalendar({ data, year, totalActivities }: GithubActivityCalendarProps) {
   const [theme, setTheme] = useState<ThemeMode>(readTheme);
+  const [hoveredActivity, setHoveredActivity] = useState<ActivityDay | null>(null);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -48,39 +56,56 @@ export default function GithubActivityCalendar({ data }: GithubActivityCalendarP
     return () => observer.disconnect();
   }, []);
 
+  const activityLabel = useMemo(() => {
+    if (hoveredActivity) {
+      return describeActivity(hoveredActivity);
+    }
+
+    return `${totalActivities} activities in ${year}`;
+  }, [hoveredActivity, totalActivities, year]);
+
   return (
-    <ActivityCalendar
-      data={data}
-      colorScheme={theme}
-      theme={calendarTheme}
-      blockSize={14}
-      blockMargin={5}
-      blockRadius={4}
-      fontSize={12}
-      showWeekdayLabels={['mon', 'wed', 'fri']}
-      labels={{
-        totalCount: '{{count}} contributions tracked across the last year',
-        legend: {
-          less: 'low',
-          more: 'high',
-        },
-      }}
-      tooltips={{
-        activity: {
-          text: (activity) =>
-            `${activity.count} contribution${activity.count === 1 ? '' : 's'} on ${formatTooltipDate(activity.date)}`,
-          withArrow: false,
-          offset: 10,
-          hoverRestMs: 20,
-        },
-        colorLegend: {
-          text: (level) => `Intensity level ${level}`,
-          withArrow: false,
-          offset: 10,
-        },
-      }}
-      className="github-calendar"
-    />
+    <div className="github-calendar-wrap">
+      <ActivityCalendar
+        data={data}
+        colorScheme={theme}
+        theme={calendarTheme}
+        blockSize={14}
+        blockMargin={5}
+        blockRadius={4}
+        fontSize={12}
+        showWeekdayLabels={['mon', 'wed', 'fri']}
+        showTotalCount={false}
+        showColorLegend={false}
+        renderBlock={(block, activity) =>
+          cloneElement(block, {
+            onMouseEnter: () => setHoveredActivity(activity as ActivityDay),
+            onMouseLeave: () => setHoveredActivity(null),
+            onFocus: () => setHoveredActivity(activity as ActivityDay),
+            onBlur: () => setHoveredActivity(null),
+            'aria-label': describeActivity(activity as ActivityDay),
+          })
+        }
+        className="github-calendar"
+      />
+
+      <div className="github-activity-footer" aria-live="polite">
+        <p className="github-activity-status">{activityLabel}</p>
+
+        <div className="github-activity-legend" aria-hidden="true">
+          <span>Less</span>
+          <div className="github-activity-legend-scale">
+            {legendLevels.map((level) => (
+              <span
+                key={level}
+                className="github-activity-legend-swatch"
+                style={{ backgroundColor: calendarTheme[theme][level] }}
+              />
+            ))}
+          </div>
+          <span>More</span>
+        </div>
+      </div>
+    </div>
   );
 }
-

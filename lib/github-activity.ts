@@ -8,7 +8,7 @@ type RawContributionDay = {
 };
 
 type RawContributionResponse = {
-  total?: {
+  total?: Record<string, number | undefined> & {
     lastYear?: number;
   };
   contributions?: RawContributionDay[];
@@ -34,15 +34,15 @@ export type ActivitySummary = {
 
 export type GithubActivity = {
   username: string;
+  year: number;
   days: ActivityDay[];
   summary: ActivitySummary;
-  totalLastYear: number;
+  totalForYear: number;
   fetchedAt: string;
 };
 
 const GITHUB_ACTIVITY_TTL_SECONDS = 60 * 60 * 6;
 const GITHUB_ACTIVITY_ENDPOINT = 'https://github-contributions-api.jogruber.de/v4';
-const FALLBACK_WINDOW_DAYS = 365;
 
 const clampLevel = (level: number): ActivityDay['level'] => {
   if (level <= 0) {
@@ -78,13 +78,14 @@ const getWeekStartKey = (date: string) => {
   return formatIsoDate(value);
 };
 
-const buildFallbackDays = () => {
-  const end = new Date();
-  const endUtc = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
+export const buildYearActivityWindow = (year: number) => {
+  const start = new Date(Date.UTC(year, 0, 1));
+  const end = new Date(Date.UTC(year, 11, 31));
+  const totalDays = Math.floor((end.getTime() - start.getTime()) / 86_400_000) + 1;
 
-  return Array.from({ length: FALLBACK_WINDOW_DAYS }, (_, index) => {
-    const value = new Date(endUtc);
-    value.setUTCDate(endUtc.getUTCDate() - (FALLBACK_WINDOW_DAYS - 1 - index));
+  return Array.from({ length: totalDays }, (_, index) => {
+    const value = new Date(start);
+    value.setUTCDate(start.getUTCDate() + index);
 
     return {
       date: formatIsoDate(value),
@@ -153,20 +154,26 @@ export function buildActivitySummary(days: ActivityDay[]): ActivitySummary {
   };
 }
 
-const buildPayload = (username: string, contributions: RawContributionDay[], totalLastYear?: number): GithubActivity => {
+const buildPayload = (
+  username: string,
+  year: number,
+  contributions: RawContributionDay[],
+  totalForYear?: number,
+): GithubActivity => {
   const days = normalizeContributionDays(contributions);
   const summary = buildActivitySummary(days);
 
   return {
     username,
+    year,
     days,
     summary,
-    totalLastYear: totalLastYear ?? summary.totalContributions,
+    totalForYear: totalForYear ?? summary.totalContributions,
     fetchedAt: new Date().toISOString(),
   };
 };
 
-const cacheKeyForUser = (username: string) => `portfolio:github-activity:${username.toLowerCase()}`;
+const cacheKeyForUser = (username: string, year: number) => `portfolio:github-activity:${username.toLowerCase()}:${year}`;
 
 const readCachedActivity = async (key: string) => {
   if (!redis) {
@@ -193,8 +200,8 @@ const writeCachedActivity = async (key: string, payload: GithubActivity) => {
   }
 };
 
-const fetchGithubActivityLive = async (username: string) => {
-  const response = await fetch(`${GITHUB_ACTIVITY_ENDPOINT}/${encodeURIComponent(username)}?y=last`, {
+const fetchGithubActivityLive = async (username: string, year: number) => {
+  const response = await fetch(`${GITHUB_ACTIVITY_ENDPOINT}/${encodeURIComponent(username)}?y=${year}`, {
     headers: { accept: 'application/json' },
     cache: 'no-store',
   });
@@ -210,12 +217,12 @@ const fetchGithubActivityLive = async (username: string) => {
     throw new Error('GitHub activity upstream returned no contribution days');
   }
 
-  return buildPayload(username, contributions, payload.total?.lastYear);
+  return buildPayload(username, year, contributions, payload.total?.[String(year)]);
 };
 
-export const getGithubActivity = cache(async (username: string): Promise<GithubActivity> => {
+export const getGithubActivity = cache(async (username: string, year: number): Promise<GithubActivity> => {
   const normalizedUsername = username.trim();
-  const key = cacheKeyForUser(normalizedUsername);
+  const key = cacheKeyForUser(normalizedUsername, year);
   const cached = await readCachedActivity(key);
 
   if (cached) {
@@ -223,11 +230,11 @@ export const getGithubActivity = cache(async (username: string): Promise<GithubA
   }
 
   try {
-    const fresh = await fetchGithubActivityLive(normalizedUsername);
+    const fresh = await fetchGithubActivityLive(normalizedUsername, year);
     await writeCachedActivity(key, fresh);
     return fresh;
   } catch {
-    const fallback = buildPayload(normalizedUsername, buildFallbackDays(), 0);
+    const fallback = buildPayload(normalizedUsername, year, buildYearActivityWindow(year), 0);
     return fallback;
   }
 });

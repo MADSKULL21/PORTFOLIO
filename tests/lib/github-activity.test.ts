@@ -1,8 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildYearActivityWindow,
   buildActivitySummary,
   normalizeContributionDays,
 } from '../../lib/github-activity';
+
+describe('buildYearActivityWindow', () => {
+  it('returns a full Jan-Dec UTC activity window for the requested year', () => {
+    const days = buildYearActivityWindow(2026);
+
+    expect(days).toHaveLength(365);
+    expect(days[0]).toEqual({ date: '2026-01-01', count: 0, level: 0 });
+    expect(days[days.length - 1]).toEqual({ date: '2026-12-31', count: 0, level: 0 });
+  });
+});
 
 describe('normalizeContributionDays', () => {
   it('preserves dates and normalizes contribution levels into the 0-4 range', () => {

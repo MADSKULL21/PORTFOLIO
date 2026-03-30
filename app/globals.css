@@ -693,72 +693,20 @@ svg {
     linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, transparent), color-mix(in srgb, var(--surface-strong) 96%, transparent));
 }
 
-.github-activity-layout {
-  display: grid;
+.github-activity-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.github-activity-copy {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.github-activity-sub {
+.github-activity-title {
   margin: 0;
-  max-width: 62ch;
-  color: color-mix(in srgb, var(--text) 88%, transparent);
-}
-
-.github-activity-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.72rem;
-}
-
-.github-activity-stat {
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 94%, transparent), color-mix(in srgb, var(--surface) 84%, transparent));
-  padding: 0.82rem 0.88rem 0.9rem;
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent);
-  transition:
-    transform 220ms var(--panel-ease),
-    border-color 220ms var(--panel-ease),
-    background 220ms var(--panel-ease);
-}
-
-.github-activity-stat:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
-}
-
-.github-activity-stat-label,
-.github-activity-stat-note {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.71rem;
-}
-
-.github-activity-stat-label {
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.github-activity-stat-value {
-  display: block;
-  margin-top: 0.42rem;
-  font-size: clamp(1.05rem, 2vw, 1.5rem);
-  line-height: 1.15;
-  color: var(--text);
-  text-wrap: balance;
-}
-
-.github-activity-stat-note {
-  margin-top: 0.34rem;
-  color: color-mix(in srgb, var(--accent) 72%, var(--muted));
+  font-size: clamp(1.4rem, 3vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-family: var(--font-heading);
 }
 
 .github-activity-shell {
@@ -771,6 +719,11 @@ svg {
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
     0 18px 34px color-mix(in srgb, var(--bg) 28%, transparent);
+}
+
+.github-calendar-wrap {
+  display: grid;
+  gap: 0.95rem;
 }
 
 .github-calendar {
@@ -809,23 +762,41 @@ svg {
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 32%, transparent));
 }
 
-.github-calendar .react-activity-calendar__footer {
+.github-activity-footer {
   display: flex;
   gap: 0.9rem;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.9rem;
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
 }
 
-.github-calendar .react-activity-calendar__count {
+.github-activity-status {
+  margin: 0;
   color: color-mix(in srgb, var(--text) 88%, transparent);
+  font-size: 0.9rem;
 }
 
-.github-calendar .react-activity-calendar__legend-colors {
-  gap: 0.34rem;
+.github-activity-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: color-mix(in srgb, var(--text) 84%, transparent);
+}
+
+.github-activity-legend-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.github-activity-legend-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid color-mix(in srgb, var(--bg) 45%, transparent);
 }
 
 .projects-panel .panel-head {
@@ -1285,10 +1256,6 @@ svg {
     grid-template-columns: 1fr;
   }
 
-  .github-activity-metrics {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .footer-actions {
     justify-content: flex-start;
   }
@@ -1327,17 +1294,22 @@ svg {
     display: block;
   }
 
-  .github-activity-metrics {
-    grid-template-columns: 1fr;
+  .github-activity-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .github-activity-shell {
     padding: 0.8rem 0.75rem;
   }
 
-  .github-calendar .react-activity-calendar__footer {
+  .github-activity-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .github-activity-legend {
+    flex-wrap: wrap;
   }
 }
 

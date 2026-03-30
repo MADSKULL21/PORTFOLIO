@@ -20,7 +20,7 @@ export type ContributionDay = {
 };
 
 export type ActivityDay = ContributionDay & {
-  level: 0 | 1 | 2 | 3 | 4;
+  level: 0 | 1 | 2 | 3 | 4 | 5;
 };
 
 export type ActivitySummary = {
@@ -44,30 +44,23 @@ export type GithubActivity = {
 const GITHUB_ACTIVITY_TTL_SECONDS = 60 * 60 * 6;
 const GITHUB_ACTIVITY_ENDPOINT = 'https://github-contributions-api.jogruber.de/v4';
 
-const clampLevel = (level: number): ActivityDay['level'] => {
-  if (level <= 0) {
-    return 0;
-  }
-  if (level >= 4) {
-    return 4;
-  }
-  return Math.round(level) as ActivityDay['level'];
-};
-
 const deriveLevel = (count: number): ActivityDay['level'] => {
   if (count <= 0) {
     return 0;
   }
-  if (count < 4) {
+  if (count < 2) {
     return 1;
   }
-  if (count < 10) {
+  if (count < 5) {
     return 2;
   }
-  if (count < 20) {
+  if (count < 10) {
     return 3;
   }
-  return 4;
+  if (count < 20) {
+    return 4;
+  }
+  return 5;
 };
 
 const formatIsoDate = (value: Date) => value.toISOString().slice(0, 10);
@@ -96,13 +89,13 @@ export const buildYearActivityWindow = (year: number) => {
 };
 
 export function normalizeContributionDays(days: Array<ContributionDay & { level?: number }>) {
-  return days.map(({ date, count, level }) => {
+  return days.map(({ date, count }) => {
     const normalizedCount = Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
 
     return {
       date,
       count: normalizedCount,
-      level: typeof level === 'number' ? clampLevel(level) : deriveLevel(normalizedCount),
+      level: deriveLevel(normalizedCount),
     };
   });
 }

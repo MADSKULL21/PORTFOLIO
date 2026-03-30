@@ -3,8 +3,13 @@
 import { cloneElement, useEffect, useMemo, useState } from 'react';
 import { ActivityCalendar } from 'react-activity-calendar';
 import type { ActivityDay } from '@/lib/github-activity';
-
-type ThemeMode = 'dark' | 'light';
+import {
+  describeGithubActivity,
+  formatGithubActivityStatus,
+  GITHUB_ACTIVITY_LEGEND_LEVELS,
+  GITHUB_ACTIVITY_THEME,
+  type GithubActivityThemeMode,
+} from '@/lib/github-activity-presenter';
 
 type GithubActivityCalendarProps = {
   data: ActivityDay[];
@@ -12,12 +17,7 @@ type GithubActivityCalendarProps = {
   totalActivities: number;
 };
 
-const calendarTheme = {
-  dark: ['#2a2a2a', '#4c4c4c', '#767676', '#a7a7a7', '#dfdfdf'],
-  light: ['#e7e0d4', '#cec5b6', '#aca191', '#847968', '#5d5344'],
-};
-
-const readTheme = (): ThemeMode => {
+const readTheme = (): GithubActivityThemeMode => {
   if (typeof document === 'undefined') {
     return 'dark';
   }
@@ -25,21 +25,8 @@ const readTheme = (): ThemeMode => {
   return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 };
 
-const formatTooltipDate = (date: string) =>
-  new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(`${date}T00:00:00Z`));
-
-const describeActivity = (activity: ActivityDay) =>
-  `${activity.count} contribution${activity.count === 1 ? '' : 's'} on ${formatTooltipDate(activity.date)}`;
-
-const legendLevels = [0, 1, 2, 3, 4];
-
 export default function GithubActivityCalendar({ data, year, totalActivities }: GithubActivityCalendarProps) {
-  const [theme, setTheme] = useState<ThemeMode>(readTheme);
+  const [theme, setTheme] = useState<GithubActivityThemeMode>(readTheme);
   const [hoveredActivity, setHoveredActivity] = useState<ActivityDay | null>(null);
 
   useEffect(() => {
@@ -57,11 +44,7 @@ export default function GithubActivityCalendar({ data, year, totalActivities }: 
   }, []);
 
   const activityLabel = useMemo(() => {
-    if (hoveredActivity) {
-      return describeActivity(hoveredActivity);
-    }
-
-    return `${totalActivities} activities in ${year}`;
+    return formatGithubActivityStatus(hoveredActivity, totalActivities, year);
   }, [hoveredActivity, totalActivities, year]);
 
   return (
@@ -74,30 +57,33 @@ export default function GithubActivityCalendar({ data, year, totalActivities }: 
         }
       }}
     >
-      <ActivityCalendar
-        data={data}
-        colorScheme={theme}
-        theme={calendarTheme}
-        blockSize={14}
-        blockMargin={5}
-        blockRadius={4}
-        fontSize={12}
-        showWeekdayLabels={['mon', 'wed', 'fri']}
-        showTotalCount={false}
-        showColorLegend={false}
-        renderBlock={(block, activity) =>
-          cloneElement(block, {
-            onMouseEnter: () =>
-              setHoveredActivity((current) =>
-                current?.date === activity.date && current?.count === activity.count ? current : (activity as ActivityDay),
-              ),
-            onFocus: () => setHoveredActivity(activity as ActivityDay),
-            title: describeActivity(activity as ActivityDay),
-            'aria-label': describeActivity(activity as ActivityDay),
-          })
-        }
-        className="github-calendar"
-      />
+      <div className="github-calendar-viewport">
+        <ActivityCalendar
+          data={data}
+          colorScheme={theme}
+          theme={GITHUB_ACTIVITY_THEME}
+          maxLevel={5}
+          blockSize={14}
+          blockMargin={5}
+          blockRadius={4}
+          fontSize={12}
+          showWeekdayLabels={['mon', 'wed', 'fri']}
+          showTotalCount={false}
+          showColorLegend={false}
+          renderBlock={(block, activity) =>
+            cloneElement(block, {
+              onMouseEnter: () =>
+                setHoveredActivity((current) =>
+                  current?.date === activity.date && current?.count === activity.count ? current : (activity as ActivityDay),
+                ),
+              onFocus: () => setHoveredActivity(activity as ActivityDay),
+              title: describeGithubActivity(activity as ActivityDay),
+              'aria-label': describeGithubActivity(activity as ActivityDay),
+            })
+          }
+          className="github-calendar"
+        />
+      </div>
 
       <div className="github-activity-footer" aria-live="polite">
         <p className="github-activity-status">{activityLabel}</p>
@@ -105,11 +91,11 @@ export default function GithubActivityCalendar({ data, year, totalActivities }: 
         <div className="github-activity-legend" aria-hidden="true">
           <span>Less</span>
           <div className="github-activity-legend-scale">
-            {legendLevels.map((level) => (
+            {GITHUB_ACTIVITY_LEGEND_LEVELS.map((level) => (
               <span
                 key={level}
                 className="github-activity-legend-swatch"
-                style={{ backgroundColor: calendarTheme[theme][level] }}
+                style={{ backgroundColor: GITHUB_ACTIVITY_THEME[theme][level] }}
               />
             ))}
           </div>

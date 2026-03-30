@@ -65,7 +65,15 @@ export default function GithubActivityCalendar({ data, year, totalActivities }: 
   }, [hoveredActivity, totalActivities, year]);
 
   return (
-    <div className="github-calendar-wrap">
+    <div
+      className="github-calendar-wrap"
+      onMouseLeave={() => setHoveredActivity(null)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setHoveredActivity(null);
+        }
+      }}
+    >
       <ActivityCalendar
         data={data}
         colorScheme={theme}
@@ -79,10 +87,12 @@ export default function GithubActivityCalendar({ data, year, totalActivities }: 
         showColorLegend={false}
         renderBlock={(block, activity) =>
           cloneElement(block, {
-            onMouseEnter: () => setHoveredActivity(activity as ActivityDay),
-            onMouseLeave: () => setHoveredActivity(null),
+            onMouseEnter: () =>
+              setHoveredActivity((current) =>
+                current?.date === activity.date && current?.count === activity.count ? current : (activity as ActivityDay),
+              ),
             onFocus: () => setHoveredActivity(activity as ActivityDay),
-            onBlur: () => setHoveredActivity(null),
+            title: describeActivity(activity as ActivityDay),
             'aria-label': describeActivity(activity as ActivityDay),
           })
         }

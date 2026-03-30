@@ -2,9 +2,19 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { navItems } from '@/content/portfolio';
 
 type ThemeMode = 'dark' | 'light';
+type ViewTransitionLike = {
+  finished: Promise<void>;
+  ready: Promise<void>;
+  updateCallbackDone: Promise<void>;
+  skipTransition: () => void;
+};
+type DocumentWithViewTransition = Document & {
+  startViewTransition?: (callback: () => void) => ViewTransitionLike;
+};
 
 const sectionIds = navItems.map((item) => item.href.replace('#', '')).filter(Boolean);
 
@@ -72,6 +82,8 @@ export default function Header() {
   }, []);
 
   const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
     void fetch('/api/stats', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -79,7 +91,19 @@ export default function Header() {
       keepalive: true,
     }).catch(() => null);
 
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const documentWithTransition = document as DocumentWithViewTransition;
+
+    if (documentWithTransition.startViewTransition && !prefersReducedMotion) {
+      documentWithTransition.startViewTransition(() => {
+        flushSync(() => {
+          setTheme(nextTheme);
+        });
+      });
+      return;
+    }
+
+    setTheme(nextTheme);
   };
 
   return (

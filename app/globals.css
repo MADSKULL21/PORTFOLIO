@@ -18,6 +18,7 @@
   --radius-xl: 24px;
   --radius-md: 14px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --scroll-progress: 0;
 }
 
@@ -207,16 +208,19 @@ svg {
 }
 
 .nav-logo {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
-  font-size: 0.69rem;
-  font-weight: 600;
-  border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
-  background: color-mix(in srgb, var(--surface-strong) 86%, transparent);
-  color: color-mix(in srgb, var(--accent) 82%, white);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  border: 2px solid #c9a125;
+  background: #0b0b0b;
+  color: #e7c64a;
+  box-shadow: 0 0 0 1px #151515 inset;
 }
 
 .site-nav nav {
@@ -305,12 +309,64 @@ svg {
 
 .panel,
 .site-footer {
+  position: relative;
+  isolation: isolate;
   border: 1px solid var(--stroke);
   border-radius: var(--radius-xl);
   background: var(--surface);
   box-shadow: var(--shadow);
   backdrop-filter: blur(8px);
   padding: clamp(1rem, 2.2vw, 1.65rem);
+  overflow: hidden;
+  transition:
+    border-color 220ms var(--panel-ease),
+    box-shadow 220ms var(--panel-ease),
+    transform 220ms var(--panel-ease),
+    background 220ms var(--panel-ease);
+}
+
+.panel::before,
+.site-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 11%, transparent) 0%,
+      transparent 26% 74%,
+      color-mix(in srgb, var(--accent-2) 10%, transparent) 100%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--accent) 10%, transparent) 50%,
+      transparent 100%
+    );
+  opacity: 0.8;
+}
+
+.panel::after,
+.site-footer::after {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  right: 1.2rem;
+  bottom: 0.95rem;
+  height: 1px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 38%, transparent), transparent);
+  opacity: 0.26;
+}
+
+.panel > *,
+.site-footer > * {
+  position: relative;
+  z-index: 1;
 }
 
 .panel-head {
@@ -359,6 +415,21 @@ svg {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-diagonal-reveal 620ms var(--ease-out);
 }
 
 .hero-panel {
@@ -562,23 +633,6 @@ svg {
   filter: grayscale(100%) contrast(1.08) brightness(0.9);
 }
 
-.ascii-overlay {
-  position: absolute;
-  z-index: 2;
-  left: 0.55rem;
-  right: 0.55rem;
-  bottom: 0.55rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-strong) 90%, transparent);
-  backdrop-filter: blur(4px);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: clamp(0.72rem, 0.84vw, 0.9rem);
-  letter-spacing: 0.01em;
-  padding: 0.33rem 0.58rem;
-}
-
 .about-grid {
   display: block;
 }
@@ -633,21 +687,145 @@ svg {
   margin-top: 0.85rem;
 }
 
-.graph-frame {
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
-  padding: 0.65rem;
-  overflow-x: auto;
+.github-activity-panel {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, transparent), color-mix(in srgb, var(--surface-strong) 96%, transparent));
 }
 
-.graph-image {
+.github-activity-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.github-activity-copy {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.github-activity-sub {
+  margin: 0;
+  max-width: 62ch;
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+}
+
+.github-activity-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.72rem;
+}
+
+.github-activity-stat {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 94%, transparent), color-mix(in srgb, var(--surface) 84%, transparent));
+  padding: 0.82rem 0.88rem 0.9rem;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent);
+  transition:
+    transform 220ms var(--panel-ease),
+    border-color 220ms var(--panel-ease),
+    background 220ms var(--panel-ease);
+}
+
+.github-activity-stat:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.github-activity-stat-label,
+.github-activity-stat-note {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+}
+
+.github-activity-stat-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.github-activity-stat-value {
+  display: block;
+  margin-top: 0.42rem;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 1.15;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.github-activity-stat-note {
+  margin-top: 0.34rem;
+  color: color-mix(in srgb, var(--accent) 72%, var(--muted));
+}
+
+.github-activity-shell {
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 94%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
+    0 18px 34px color-mix(in srgb, var(--bg) 28%, transparent);
+}
+
+.github-calendar {
   width: 100%;
-  min-width: 700px;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
-  background: color-mix(in srgb, var(--bg) 80%, black);
+  color: var(--muted);
+}
+
+.github-calendar .react-activity-calendar__scroll-container {
+  padding: 0.18rem 0 0.35rem;
+}
+
+.github-calendar .react-activity-calendar__calendar {
+  min-width: max-content;
+}
+
+.github-calendar text {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 0.03em;
+  fill: color-mix(in srgb, var(--muted) 92%, transparent);
+}
+
+.github-calendar rect {
+  stroke: color-mix(in srgb, var(--bg) 60%, transparent);
+  stroke-width: 0.7px;
+  transition:
+    transform 160ms var(--panel-ease),
+    filter 160ms var(--panel-ease),
+    stroke 160ms var(--panel-ease);
+  transform-origin: center;
+}
+
+.github-calendar rect:hover {
+  transform: scale(1.15);
+  stroke: color-mix(in srgb, var(--accent) 54%, transparent);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 32%, transparent));
+}
+
+.github-calendar .react-activity-calendar__footer {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.9rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.github-calendar .react-activity-calendar__count {
+  color: color-mix(in srgb, var(--text) 88%, transparent);
+}
+
+.github-calendar .react-activity-calendar__legend-colors {
+  gap: 0.34rem;
 }
 
 .projects-panel .panel-head {
@@ -1045,6 +1223,20 @@ svg {
   }
 }
 
+@keyframes theme-diagonal-reveal {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  }
+
+  58% {
+    clip-path: polygon(0 0, 100% 0, 0 100%, 0 100%);
+  }
+
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
 @media (max-width: 1040px) {
   .nav-inner {
     flex-wrap: wrap;
@@ -1093,6 +1285,10 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .github-activity-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .footer-actions {
     justify-content: flex-start;
   }
@@ -1131,8 +1327,17 @@ svg {
     display: block;
   }
 
-  .graph-image {
-    min-width: 560px;
+  .github-activity-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .github-activity-shell {
+    padding: 0.8rem 0.75rem;
+  }
+
+  .github-calendar .react-activity-calendar__footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

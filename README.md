@@ -1,6 +1,6 @@
 # Shaunak Lad Portfolio
 
-Next.js 16 portfolio project for Shaunak Lad, built with the App Router, TypeScript, and a single global CSS system.
+Next.js 16 portfolio project for Shaunak Lad, built with the App Router, TypeScript, a single global CSS system, and a server-rendered GitHub activity card.
 
 ## Stack
 
@@ -8,7 +8,9 @@ Next.js 16 portfolio project for Shaunak Lad, built with the App Router, TypeScr
 - React 19
 - TypeScript
 - Global CSS
-- Route Handlers at `/api/stats` and `/api/github-graph.svg`
+- `react-activity-calendar`
+- Upstash Redis cache fallback support
+- Route Handlers at `/api/stats`
 
 ## Structure
 
@@ -28,6 +30,9 @@ content/
 public/
   images/
   Shaunak_ML_RESUME.pdf
+lib/
+  github-activity.ts
+  redis.ts
 ```
 
 ## Development
@@ -35,6 +40,13 @@ public/
 ```bash
 npm install
 npm run dev
+```
+
+To enable Redis-backed caching for the GitHub activity card on Vercel, set:
+
+```bash
+UPSTASH_REDIS_REST_URL=...
+UPSTASH_REDIS_REST_TOKEN=...
 ```
 
 ## Verification

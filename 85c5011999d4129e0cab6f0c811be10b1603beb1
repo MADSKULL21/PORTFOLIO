@@ -1,0 +1,23 @@
+.gitignore
+  0d203e8adeddf4f3 17-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "85c5011999d4129e0cab6f0c811be10b1603beb1",
+  "prompts": {
+    "0d203e8adeddf4f3": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "652a0990-64b7-4c3a-bb9b-3dfdb77c1a02",
+        "model": "default"
+      },
+      "human_author": "shaunak lad",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}

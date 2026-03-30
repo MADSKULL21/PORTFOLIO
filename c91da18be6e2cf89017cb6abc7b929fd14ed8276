@@ -1,0 +1,23 @@
+next.config.ts
+  0d203e8adeddf4f3 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.22",
+  "base_commit_sha": "c91da18be6e2cf89017cb6abc7b929fd14ed8276",
+  "prompts": {
+    "0d203e8adeddf4f3": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "652a0990-64b7-4c3a-bb9b-3dfdb77c1a02",
+        "model": "default"
+      },
+      "human_author": "shaunak lad",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 3,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}

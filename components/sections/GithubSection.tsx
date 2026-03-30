@@ -10,12 +10,13 @@ export default async function GithubSection() {
 
   return (
     <section id="github-graph" className="panel github-activity-panel" data-reveal>
-      <div className="github-activity-head">
-        <h2 className="github-activity-title">GitHub Activity</h2>
+      <div className="panel-head github-activity-head">
+        <p className="label">GitHub Activity</p>
         <a className="panel-link" href={`https://github.com/${githubUsername}`} target="_blank" rel="noopener noreferrer">
           open github ↗
         </a>
       </div>
+      <h2 className="sr-only">GitHub Activity</h2>
 
       <Reveal className="github-activity-shell" delay={90}>
         <GithubActivityCalendar

@@ -691,19 +691,7 @@ svg {
 }
 
 .github-activity-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
   margin-bottom: 1rem;
-}
-
-.github-activity-title {
-  margin: 0;
-  font-size: clamp(1.4rem, 3vw, 2.25rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-family: var(--font-heading);
 }
 
 .github-activity-shell {
@@ -723,13 +711,25 @@ svg {
   gap: 0.95rem;
 }
 
-.github-calendar {
+.github-calendar-viewport {
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.18rem 0 0.45rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 34%, transparent) transparent;
+}
+
+.github-calendar {
+  width: max-content;
+  min-width: 100%;
   color: var(--muted);
 }
 
 .github-calendar .react-activity-calendar__scroll-container {
-  padding: 0.18rem 0 0.35rem;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
 }
 
 .github-calendar .react-activity-calendar__calendar {
@@ -740,11 +740,11 @@ svg {
   font-family: var(--font-mono);
   font-size: 0.73rem;
   letter-spacing: 0.03em;
-  fill: color-mix(in srgb, var(--muted) 92%, transparent);
+  fill: color-mix(in srgb, var(--text) 72%, var(--muted));
 }
 
 .github-calendar rect {
-  stroke: color-mix(in srgb, var(--bg) 60%, transparent);
+  stroke: color-mix(in srgb, var(--surface-strong) 72%, var(--accent));
   stroke-width: 0.7px;
   transition:
     filter 160ms var(--panel-ease),
@@ -752,12 +752,13 @@ svg {
 }
 
 .github-calendar rect:hover {
-  stroke: color-mix(in srgb, var(--accent) 54%, transparent);
-  filter: brightness(1.08) drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 28%, transparent));
+  stroke: color-mix(in srgb, var(--accent) 82%, white);
+  filter: brightness(1.04) drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 34%, transparent));
 }
 
 .github-activity-footer {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.9rem;
   justify-content: space-between;
   align-items: center;
@@ -768,7 +769,7 @@ svg {
 
 .github-activity-status {
   margin: 0;
-  color: color-mix(in srgb, var(--text) 88%, transparent);
+  color: color-mix(in srgb, var(--accent) 12%, var(--text));
   font-size: 0.9rem;
 }
 
@@ -776,7 +777,9 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: color-mix(in srgb, var(--text) 84%, transparent);
+  color: color-mix(in srgb, var(--accent) 14%, var(--text));
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .github-activity-legend-scale {
@@ -790,7 +793,8 @@ svg {
   width: 18px;
   height: 18px;
   border-radius: 5px;
-  border: 1px solid color-mix(in srgb, var(--bg) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--bg));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 14%, transparent);
 }
 
 .projects-panel .panel-head {
@@ -1108,17 +1112,27 @@ svg {
 }
 
 .site-footer.footer-pro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) auto;
-  align-items: start;
-  gap: 1rem;
+  display: block;
   background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-strong) 96%, transparent));
 }
 
-.footer-pro-left {
+.footer-pro-body {
   display: grid;
-  gap: 0.32rem;
-  max-width: 36rem;
+  align-content: start;
+  gap: 0.42rem;
+  width: 100%;
+}
+
+.footer-main-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1rem 1.4rem;
+}
+
+.footer-meta-stack {
+  display: grid;
+  gap: 0.22rem;
 }
 
 .footer-kicker {
@@ -1135,6 +1149,7 @@ svg {
   font-size: 1rem;
   line-height: 1.5;
   text-wrap: balance;
+  max-width: 36rem;
 }
 
 .footer-meta {
@@ -1146,10 +1161,10 @@ svg {
 .footer-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   gap: 0.85rem;
-  justify-self: end;
+  margin: 0;
 }
 
 .footer-actions a {
@@ -1230,8 +1245,7 @@ svg {
 
   .hero-grid,
   .about-grid,
-  .achievements-layout,
-  .site-footer.footer-pro {
+  .achievements-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1257,7 +1271,10 @@ svg {
 
   .footer-actions {
     justify-content: flex-start;
-    justify-self: start;
+  }
+
+  .footer-main-row {
+    grid-template-columns: 1fr;
   }
 }
 

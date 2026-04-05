@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { navItems } from '@/content/portfolio';
 
@@ -32,6 +33,7 @@ const readTheme = (): ThemeMode => {
 };
 
 export default function Header() {
+  const pathname = usePathname();
   const [active, setActive] = useState('#top');
   const [theme, setTheme] = useState<ThemeMode>(readTheme);
 
@@ -126,6 +128,16 @@ export default function Header() {
         </nav>
 
         <div className="nav-actions">
+          <Link
+            href="/terminal"
+            className="nav-terminal-button"
+            aria-current={pathname === '/terminal' ? 'page' : undefined}
+          >
+            <span className="nav-terminal-icon" aria-hidden="true">
+              &gt;_
+            </span>
+            <span>Terminal</span>
+          </Link>
           <button
             type="button"
             className="icon-button"

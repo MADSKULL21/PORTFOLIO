@@ -1,0 +1,23 @@
+next-env.d.ts
+  6347b6fc1cf3ba1a 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "faf8c76a58b3f31159b9b58e71e72d96794057cc",
+  "prompts": {
+    "6347b6fc1cf3ba1a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019c6535-7a3e-7580-952c-accaa8c444df",
+        "model": "gpt-5.4"
+      },
+      "human_author": "shaunak lad",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}

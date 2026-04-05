@@ -1,0 +1,31 @@
+components/terminal/TerminalExperience.tsx
+  7e5f425a52d68de4 1-224
+app/globals.css
+  7e5f425a52d68de4 1333-1648
+lib/terminal-commands.ts
+  7e5f425a52d68de4 1-169
+app/terminal/page.tsx
+  7e5f425a52d68de4 1-24
+components/layout/Header.tsx
+  7e5f425a52d68de4 4,36,131-140
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "1fae67a67829f0694707f7b4fc5db0e9ee215042",
+  "prompts": {
+    "7e5f425a52d68de4": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dd2d44b9-0279-471b-bb79-d2566f1e3951",
+        "model": "default"
+      },
+      "human_author": "shaunak lad",
+      "messages": [],
+      "total_additions": 776,
+      "total_deletions": 31,
+      "accepted_lines": 745,
+      "overriden_lines": 0
+    }
+  }
+}
